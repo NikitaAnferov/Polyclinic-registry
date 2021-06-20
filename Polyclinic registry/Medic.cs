@@ -31,6 +31,11 @@ namespace Polyclinic_registry
             this.treatments = treatments;
         }
 
+        public void AddTreatment(Treatment t)
+        {
+            treatments.Add(t);
+        }
+
         public override string GetInfo()
         {
             return string.Format("- {0}\n" +

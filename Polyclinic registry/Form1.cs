@@ -15,33 +15,26 @@ namespace Polyclinic_registry
     public partial class Form1 : Form
     {
         Polyclinic polyclinic;
-        Medic medic;
 
         public Form1()
         {
             InitializeComponent();
-            polyclinic = new Polyclinic(6, "ул. Мимолетная 7", "8-800-555-35-35", new List<Patient>());
+            polyclinic = new Polyclinic(6, "ул. Мимолетная 7", "8-800-555-35-35", new List<Patient>(), new List<Medic>());
+
+            Add_Medic("Игнатова Екатерина Григольевна", Human.Gender.женский, new DateTime(1987, 03, 12), "Стоматолог", "Старший врач стоматолог", new DateTime(2005, 01, 30), new List<Treatment>());
+
+            Add_Medic("Шмаков Игорь Валентинович", Human.Gender.мужской, new DateTime(2000, 03, 06), "Массажист", "Стажер", new DateTime(2005, 01, 30), new List<Treatment>());
+
+            Add_Medic("Шмакова Ирина Валентиновна", Human.Gender.женский, new DateTime(2000, 03, 06), "Гинеколог", "Стажер", new DateTime(2005, 01, 30), new List<Treatment>());
 
             Add_Patient("Задорнов Алексей Игоревич", Human.Gender.мужской, new DateTime(1990, 07, 16), "29367456", Patient.BloodType.II);
-            // AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "отрицательные", "здоров");
+            AddNew_Treatment(new DateTime(2021, 05, 04), polyclinic.patients.Last().fio, polyclinic.medics[0].fio, "отрицательные", "здоров");
 
             Add_Patient("Александров Василий Петрович", Human.Gender.мужской, new DateTime(2001, 11, 03), "58793468", Patient.BloodType.IV);
-            //AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "положительные", "отравление");
+            AddNew_Treatment(new DateTime(2021, 05, 04), polyclinic.patients.Last().fio, polyclinic.medics[1].fio, "положительные", "отравление");
 
             Add_Patient("Андреева Евгения Игоревна", Human.Gender.женский, new DateTime(1999, 01, 12), "45983879", Patient.BloodType.I);
-            //AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "положительные", "гастрит");
-
-            medic = new Medic("Игнатова Екатерина Григольевна", Human.Gender.женский, new DateTime(1987, 03, 12), "Стоматолог", "Старший врач стоматолог", new DateTime(2005, 01, 30), new List<Treatment>());
-            medic = new Medic("Шмаков Игорь Валентинович", Human.Gender.мужской, new DateTime(2000, 03, 06), "Массажист", "Стажер", new DateTime(2005, 01, 30), new List<Treatment>());
-            medic = new Medic("Шмакова Ирина Валентиновна", Human.Gender.женский, new DateTime(2000, 03, 06), "Гинеколог", "Стажер", new DateTime(2005, 01, 30), new List<Treatment>());
-            /*
-            foreach (Patient p in polyclinic.patients)
-            {
-                AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "отрицательные", "здоров");
-                AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "положительные", "отравление");
-                AddNew_Treatment(new DateTime(2021, 05, 04), p.fio, "положительные", "гастрит");
-            }
-            */
+            AddNew_Treatment(new DateTime(2021, 05, 04), polyclinic.patients.Last().fio, polyclinic.medics[2].fio, "положительные", "гастрит");
         }
 
         //======================================
@@ -49,39 +42,143 @@ namespace Polyclinic_registry
 
         {
             dataGridViewPoliclinicData.Rows.Clear();
+            if (polyclinic.patients.Count == 0)
+                return;
             dataGridViewPoliclinicData.RowCount = polyclinic.patients.Count;
             int i = 0;
             foreach (Patient p in polyclinic.patients)
             {
                 dataGridViewPoliclinicData[0, i].Value = p.fio;
                 dataGridViewPoliclinicData[1, i].Value = p.policyNumber;
+                dataGridViewPoliclinicData[2, i].Value = p.birthdate;
+                dataGridViewPoliclinicData[3, i].Value = p.gen;
+                dataGridViewPoliclinicData[4, i].Value = p.bloodt;
                 i++;
-                int j = 0;
-                foreach (Treatment t in medic.treatments)
-                {
-                    if (p.fio == t.fioPatient)
-                    {
-                        dataGridViewPoliclinicData[2, j].Value = t.testResults;
-                        dataGridViewPoliclinicData[3, j].Value = t.diagnostic;
-                        j++;
-                    }
-                    else
-                    {
-                        dataGridViewPoliclinicData[2, j].Value = "Uncnown";
-                        dataGridViewPoliclinicData[3, j].Value = "Uncnown";
-                        j++;
-                    }
-                }
             }
             
             
         }
         //=====================================
 
+        public void RefreshMedics() 
+
+        {
+            dataGridViewMedics.Rows.Clear();
+            if (polyclinic.medics.Count == 0)
+                return;
+            dataGridViewMedics.RowCount = polyclinic.medics.Count;
+            int i = 0;
+            foreach (Medic m in polyclinic.medics)
+            {
+                dataGridViewMedics[0, i].Value = m.specialty;
+                dataGridViewMedics[1, i].Value = m.fio;
+                dataGridViewMedics[2, i].Value = m.position;
+                dataGridViewMedics[3, i].Value = m.dateOfCommencement;
+                dataGridViewMedics[4, i].Value = m.treatments.Count;
+
+                i++;
+            }
+
+
+        }
+
+        public void RefreshTreatment()
+
+        {
+            dataGridViewTreatmens.Rows.Clear();
+            if (Treatments.treatments.Count == 0)
+                return;
+            dataGridViewTreatmens.RowCount = Treatments.treatments.Count;
+            int i = 0;
+            foreach (Treatment t in Treatments.treatments)
+            {
+                dataGridViewTreatmens[0, i].Value = t.dateOfTreatment;
+                dataGridViewTreatmens[1, i].Value = t.fioPatient;
+                dataGridViewTreatmens[2, i].Value = t.fioMedic;
+                dataGridViewTreatmens[3, i].Value = t.testResults;
+                dataGridViewTreatmens[4, i].Value = t.diagnostic;
+                i++;
+            }
+        }
+
+        public void RefreshTreatmentM(string fioMedic)
+
+        {
+            Medic medic = new Medic();
+            foreach (Medic m in polyclinic.medics)
+            {
+                if (m.fio == fioMedic)
+                {
+                    medic = m;
+                    break;
+                }
+            }
+
+            dataGridViewTreatmens.Rows.Clear();
+            if (medic.treatments.Count == 0)
+                return;
+            dataGridViewTreatmens.RowCount = medic.treatments.Count;
+            int i = 0;
+            foreach (Treatment t in medic.treatments)
+            {
+                dataGridViewTreatmens[0, i].Value = t.dateOfTreatment;
+                dataGridViewTreatmens[1, i].Value = t.fioPatient;
+                dataGridViewTreatmens[2, i].Value = t.fioMedic;
+                dataGridViewTreatmens[3, i].Value = t.testResults;
+                dataGridViewTreatmens[4, i].Value = t.diagnostic;
+                i++;
+            }
+        }
+
+        public void RefreshTreatmentP(string fioPatient)
+
+        {
+            Patient patient = new Patient();
+            foreach (Patient p in polyclinic.patients)
+            {
+                if (p.fio == fioPatient)
+                {
+                    patient = p;
+                    break;
+                }
+            }
+
+            dataGridViewTreatmens.Rows.Clear();
+            int count = 0;
+            foreach (Medic m in polyclinic.medics)
+            {
+                foreach (Treatment t in m.treatments)
+                {
+                    if (t.fioPatient == fioPatient)
+                        count++;
+                }
+            }
+            if (count == 0)
+                return;
+            dataGridViewTreatmens.RowCount = count;
+            int i = 0;
+            foreach (Medic m in polyclinic.medics)
+            {
+                foreach (Treatment t in m.treatments)
+                {
+                    if (t.fioPatient == fioPatient)
+                    {
+                        dataGridViewTreatmens[0, i].Value = t.dateOfTreatment;
+                        dataGridViewTreatmens[1, i].Value = t.fioPatient;
+                        dataGridViewTreatmens[2, i].Value = t.fioMedic;
+                        dataGridViewTreatmens[3, i].Value = t.testResults;
+                        dataGridViewTreatmens[4, i].Value = t.diagnostic;
+                        i++;
+                    }
+                }
+            }
+                
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             labelPoliclinicInformation.Text = polyclinic.Info();
-            RefreshPatients();
+            buttonViewAllTreatments_Click(sender,  e);
         }
 
         public void Add_Patient(string fio, Human.Gender gender, DateTime bd, string nump, Patient.BloodType bloodType)
@@ -89,9 +186,24 @@ namespace Polyclinic_registry
             polyclinic.AddPatient(new Patient(fio, gender, bd,nump, bloodType));
         }
 
-        static public void AddNew_Treatment(DateTime dt, string fp, string tr, string diag)
+        public void Add_Medic(string fio, Human.Gender gender, DateTime bd, string spec, string pos, DateTime dcom, List<Treatment> treatments)
         {
-            Treatments.AddNewTreatment(new Treatment(dt, fp, tr, diag));
+            polyclinic.AddMedic(new Medic(fio, gender, bd, spec, pos, dcom, treatments));
+        }
+
+         public void AddNew_Treatment(DateTime dt, string fp, string fm, string tr, string diag)
+        {
+            Treatments.AddNewTreatment(new Treatment(dt, fp, fm, tr, diag));
+            Medic medic = new Medic();
+            foreach (Medic m in polyclinic.medics)
+            {
+                if (m.fio == fm)
+                {
+                    medic = m;
+                    break;
+                }
+            }
+            medic.AddTreatment(Treatments.treatments.Last());
         }
 
         private void buttonAddPatirent_Click(object sender, EventArgs e)
@@ -121,25 +233,108 @@ namespace Polyclinic_registry
             Add_Patient(textBoxFio.Text, gender, dateTimePickerDateBd.Value, textBoxNumPolis.Text, blood);
 
             groupBoxPatient.Visible = false;
-            textBoxChekPolis.Clear();
             textBoxNumPolis.Clear();
             textBoxFio.Clear();
-            RefreshPatients();
+            RefreshAll();
         }
 
         private void buttonComoliteTreatment_Click(object sender, EventArgs e)
         {
-            string fioPatient = "Unknown";
-            foreach (Patient p in polyclinic.patients)
-                if (textBoxChekPolis.Text == p.policyNumber) fioPatient = p.fio;
-            AddNew_Treatment(dateTimePickerTreatment.Value, fioPatient, textBoxResTests.Text, textBoxdiagnostic.Text);
+            string fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
+            string fioMedic = dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value.ToString();
+            AddNew_Treatment(dateTimePickerTreatment.Value, fioPatient, fioMedic, textBoxResTests.Text, textBoxdiagnostic.Text);
 
 
             groupBoxTreatment.Visible = false;
-            RefreshPatients();
+            RefreshAll();
         }
 
+        private void buttonViewAllTreatments_Click(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
 
+        private void dataGridViewMedics_MouseUp(object sender, MouseEventArgs e)
+        {
+            SelectedRows(dataGridViewMedics);
+            RefreshTreatmentM(dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value.ToString());
+        }
+        private void dataGridViewPoliclinicData_MouseUp(object sender, MouseEventArgs e)
+        {
+            SelectedRows(dataGridViewPoliclinicData);
+            RefreshTreatmentP(dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString());
+        }
+
+        private void dataGridViewTreatmens_MouseUp(object sender, MouseEventArgs e)
+        {
+            SelectedRows(dataGridViewTreatmens);
+        }
+
+        private void SelectedRows(DataGridView dataGridView)
+        {
+            int cellRow = dataGridView.CurrentCell.RowIndex;
+            dataGridView.Rows[cellRow].Selected = true;
+        }
+
+        private void RefreshAll()
+        {
+            RefreshMedics();
+            RefreshPatients();
+            RefreshTreatment();
+        }
+
+        private void buttonRemovePatient_Click(object sender, EventArgs e)
+        {
+            String fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
+
+            Patient patient = new Patient();
+
+            foreach (Patient p in polyclinic.patients)
+            {
+                if (p.fio == fioPatient)
+                {
+                    patient = p;
+                    break;
+                }
+            }
+            polyclinic.patients.Remove(patient);
+            RefreshAll();
+        }
+
+        private void buttonRemoveTreatment_Click(object sender, EventArgs e)
+        {
+            String dateOfTreatment =  dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[0].Value.ToString();
+            String fioPatient = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[1].Value.ToString();
+            String fioMedic = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[2].Value.ToString();
+
+            Treatment treatment = new Treatment();
+            Medic medic = new Medic();
+
+            foreach (Treatment t in Treatments.treatments)
+            {
+                if (t.dateOfTreatment.ToString() == dateOfTreatment
+                    && t.fioPatient == fioPatient
+                    && t.fioMedic == fioMedic)
+                {
+                    treatment = t;
+                    break;
+                }
+            }
+            Treatments.treatments.Remove(treatment);
+
+            foreach (Medic m in polyclinic.medics)
+            {
+                if (m.fio == fioMedic)
+                {
+                    medic = m;
+                    break;
+                }
+            }
+            medic.treatments.Remove(treatment);
+
+            RefreshAll();
+
+        }
     }
 }
 

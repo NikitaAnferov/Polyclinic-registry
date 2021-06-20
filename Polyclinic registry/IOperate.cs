@@ -9,6 +9,7 @@ namespace Polyclinic_registry
     public interface IOperate
     {
         void AddPatient(Patient pa);
+        void AddMedic(Medic me);
         void RemovePatient(int ind);
     }
 }

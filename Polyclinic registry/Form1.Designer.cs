@@ -30,7 +30,6 @@
         {
             this.groupBoxPoliclinicInformation = new System.Windows.Forms.GroupBox();
             this.labelPoliclinicInformation = new System.Windows.Forms.Label();
-            this.listBoxMedic = new System.Windows.Forms.ListBox();
             this.buttonAddTreatment = new System.Windows.Forms.Button();
             this.buttonRemoveTreatment = new System.Windows.Forms.Button();
             this.buttonAddPatirent = new System.Windows.Forms.Button();
@@ -57,26 +56,41 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxResTests = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxChekPolis = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePickerTreatment = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewPoliclinicData = new System.Windows.Forms.DataGridView();
+            this.dataGridViewMedics = new System.Windows.Forms.DataGridView();
+            this.ColumnSpecialty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFIO = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnPosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDateOfCommencement = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCountTreatments = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewTreatmens = new System.Windows.Forms.DataGridView();
+            this.ColumnDateOfTreatment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFIOPatient = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnfioMedic = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTestResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDiagnostic = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonViewAllTreatments = new System.Windows.Forms.Button();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBoxDopInfo = new System.Windows.Forms.GroupBox();
-            this.labelInformationPatient = new System.Windows.Forms.Label();
-            this.labelInformationTreatment = new System.Windows.Forms.Label();
-            this.labelInformationMedic = new System.Windows.Forms.Label();
+            this.Columnbirthdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnGen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnBloodt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxPoliclinicInformation.SuspendLayout();
             this.groupBoxPatient.SuspendLayout();
             this.groupBoxGender.SuspendLayout();
             this.groupBoxBloodType.SuspendLayout();
             this.groupBoxTreatment.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPoliclinicData)).BeginInit();
-            this.groupBoxDopInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMedics)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTreatmens)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxPoliclinicInformation
@@ -98,19 +112,11 @@
             this.labelPoliclinicInformation.TabIndex = 0;
             this.labelPoliclinicInformation.Text = "Information";
             // 
-            // listBoxMedic
-            // 
-            this.listBoxMedic.FormattingEnabled = true;
-            this.listBoxMedic.Location = new System.Drawing.Point(9, 131);
-            this.listBoxMedic.Name = "listBoxMedic";
-            this.listBoxMedic.Size = new System.Drawing.Size(326, 134);
-            this.listBoxMedic.TabIndex = 1;
-            // 
             // buttonAddTreatment
             // 
-            this.buttonAddTreatment.Location = new System.Drawing.Point(341, 131);
+            this.buttonAddTreatment.Location = new System.Drawing.Point(301, 271);
             this.buttonAddTreatment.Name = "buttonAddTreatment";
-            this.buttonAddTreatment.Size = new System.Drawing.Size(126, 50);
+            this.buttonAddTreatment.Size = new System.Drawing.Size(80, 50);
             this.buttonAddTreatment.TabIndex = 3;
             this.buttonAddTreatment.Text = "Добавить обращение";
             this.buttonAddTreatment.UseVisualStyleBackColor = true;
@@ -118,18 +124,19 @@
             // 
             // buttonRemoveTreatment
             // 
-            this.buttonRemoveTreatment.Location = new System.Drawing.Point(341, 215);
+            this.buttonRemoveTreatment.Location = new System.Drawing.Point(387, 271);
             this.buttonRemoveTreatment.Name = "buttonRemoveTreatment";
-            this.buttonRemoveTreatment.Size = new System.Drawing.Size(126, 50);
+            this.buttonRemoveTreatment.Size = new System.Drawing.Size(80, 50);
             this.buttonRemoveTreatment.TabIndex = 4;
             this.buttonRemoveTreatment.Text = "Удалить обращение";
             this.buttonRemoveTreatment.UseVisualStyleBackColor = true;
+            this.buttonRemoveTreatment.Click += new System.EventHandler(this.buttonRemoveTreatment_Click);
             // 
             // buttonAddPatirent
             // 
             this.buttonAddPatirent.Location = new System.Drawing.Point(9, 271);
             this.buttonAddPatirent.Name = "buttonAddPatirent";
-            this.buttonAddPatirent.Size = new System.Drawing.Size(126, 50);
+            this.buttonAddPatirent.Size = new System.Drawing.Size(80, 50);
             this.buttonAddPatirent.TabIndex = 5;
             this.buttonAddPatirent.Text = "Добавить пациента";
             this.buttonAddPatirent.UseVisualStyleBackColor = true;
@@ -137,12 +144,13 @@
             // 
             // buttonRemovePatient
             // 
-            this.buttonRemovePatient.Location = new System.Drawing.Point(209, 271);
+            this.buttonRemovePatient.Location = new System.Drawing.Point(95, 271);
             this.buttonRemovePatient.Name = "buttonRemovePatient";
-            this.buttonRemovePatient.Size = new System.Drawing.Size(126, 50);
+            this.buttonRemovePatient.Size = new System.Drawing.Size(80, 50);
             this.buttonRemovePatient.TabIndex = 6;
             this.buttonRemovePatient.Text = "Удалить пациента";
             this.buttonRemovePatient.UseVisualStyleBackColor = true;
+            this.buttonRemovePatient.Click += new System.EventHandler(this.buttonRemovePatient_Click);
             // 
             // groupBoxPatient
             // 
@@ -318,13 +326,11 @@
             this.groupBoxTreatment.Controls.Add(this.label7);
             this.groupBoxTreatment.Controls.Add(this.textBoxResTests);
             this.groupBoxTreatment.Controls.Add(this.label6);
-            this.groupBoxTreatment.Controls.Add(this.textBoxChekPolis);
-            this.groupBoxTreatment.Controls.Add(this.label5);
             this.groupBoxTreatment.Controls.Add(this.label2);
             this.groupBoxTreatment.Controls.Add(this.dateTimePickerTreatment);
             this.groupBoxTreatment.Location = new System.Drawing.Point(9, 626);
             this.groupBoxTreatment.Name = "groupBoxTreatment";
-            this.groupBoxTreatment.Size = new System.Drawing.Size(458, 288);
+            this.groupBoxTreatment.Size = new System.Drawing.Size(458, 237);
             this.groupBoxTreatment.TabIndex = 8;
             this.groupBoxTreatment.TabStop = false;
             this.groupBoxTreatment.Text = "Ввод данных для обращения";
@@ -332,7 +338,7 @@
             // 
             // buttonComoliteTreatment
             // 
-            this.buttonComoliteTreatment.Location = new System.Drawing.Point(326, 232);
+            this.buttonComoliteTreatment.Location = new System.Drawing.Point(329, 180);
             this.buttonComoliteTreatment.Name = "buttonComoliteTreatment";
             this.buttonComoliteTreatment.Size = new System.Drawing.Size(126, 50);
             this.buttonComoliteTreatment.TabIndex = 14;
@@ -342,7 +348,7 @@
             // 
             // textBoxdiagnostic
             // 
-            this.textBoxdiagnostic.Location = new System.Drawing.Point(6, 183);
+            this.textBoxdiagnostic.Location = new System.Drawing.Point(9, 131);
             this.textBoxdiagnostic.Name = "textBoxdiagnostic";
             this.textBoxdiagnostic.Size = new System.Drawing.Size(434, 20);
             this.textBoxdiagnostic.TabIndex = 13;
@@ -350,7 +356,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 167);
+            this.label7.Location = new System.Drawing.Point(9, 115);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(51, 13);
             this.label7.TabIndex = 12;
@@ -358,7 +364,7 @@
             // 
             // textBoxResTests
             // 
-            this.textBoxResTests.Location = new System.Drawing.Point(6, 133);
+            this.textBoxResTests.Location = new System.Drawing.Point(9, 81);
             this.textBoxResTests.Name = "textBoxResTests";
             this.textBoxResTests.Size = new System.Drawing.Size(434, 20);
             this.textBoxResTests.TabIndex = 11;
@@ -366,27 +372,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 117);
+            this.label6.Location = new System.Drawing.Point(9, 65);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Результаты анализов";
-            // 
-            // textBoxChekPolis
-            // 
-            this.textBoxChekPolis.Location = new System.Drawing.Point(6, 85);
-            this.textBoxChekPolis.Name = "textBoxChekPolis";
-            this.textBoxChekPolis.Size = new System.Drawing.Size(165, 20);
-            this.textBoxChekPolis.TabIndex = 9;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(143, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Страховой полис пациента";
             // 
             // label2
             // 
@@ -410,12 +400,150 @@
             this.dataGridViewPoliclinicData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
-            this.Column4,
-            this.Column3});
-            this.dataGridViewPoliclinicData.Location = new System.Drawing.Point(473, 8);
+            this.Columnbirthdate,
+            this.ColumnGen,
+            this.ColumnBloodt});
+            this.dataGridViewPoliclinicData.Location = new System.Drawing.Point(0, 16);
             this.dataGridViewPoliclinicData.Name = "dataGridViewPoliclinicData";
-            this.dataGridViewPoliclinicData.Size = new System.Drawing.Size(531, 397);
+            this.dataGridViewPoliclinicData.ReadOnly = true;
+            this.dataGridViewPoliclinicData.RowHeadersVisible = false;
+            this.dataGridViewPoliclinicData.Size = new System.Drawing.Size(206, 241);
             this.dataGridViewPoliclinicData.TabIndex = 9;
+            this.dataGridViewPoliclinicData.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dataGridViewPoliclinicData_MouseUp);
+            // 
+            // dataGridViewMedics
+            // 
+            this.dataGridViewMedics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMedics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnSpecialty,
+            this.ColumnFIO,
+            this.ColumnPosition,
+            this.ColumnDateOfCommencement,
+            this.ColumnCountTreatments});
+            this.dataGridViewMedics.Location = new System.Drawing.Point(3, 19);
+            this.dataGridViewMedics.Name = "dataGridViewMedics";
+            this.dataGridViewMedics.ReadOnly = true;
+            this.dataGridViewMedics.RowHeadersVisible = false;
+            this.dataGridViewMedics.Size = new System.Drawing.Size(455, 115);
+            this.dataGridViewMedics.TabIndex = 11;
+            this.dataGridViewMedics.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dataGridViewMedics_MouseUp);
+            // 
+            // ColumnSpecialty
+            // 
+            this.ColumnSpecialty.HeaderText = "Специальность";
+            this.ColumnSpecialty.Name = "ColumnSpecialty";
+            this.ColumnSpecialty.ReadOnly = true;
+            // 
+            // ColumnFIO
+            // 
+            this.ColumnFIO.HeaderText = "ФИО";
+            this.ColumnFIO.Name = "ColumnFIO";
+            this.ColumnFIO.ReadOnly = true;
+            // 
+            // ColumnPosition
+            // 
+            this.ColumnPosition.HeaderText = "Должность";
+            this.ColumnPosition.Name = "ColumnPosition";
+            this.ColumnPosition.ReadOnly = true;
+            // 
+            // ColumnDateOfCommencement
+            // 
+            this.ColumnDateOfCommencement.HeaderText = "Дата трудоустройства";
+            this.ColumnDateOfCommencement.Name = "ColumnDateOfCommencement";
+            this.ColumnDateOfCommencement.ReadOnly = true;
+            // 
+            // ColumnCountTreatments
+            // 
+            this.ColumnCountTreatments.HeaderText = "Количество обращений";
+            this.ColumnCountTreatments.Name = "ColumnCountTreatments";
+            this.ColumnCountTreatments.ReadOnly = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dataGridViewMedics);
+            this.groupBox1.Location = new System.Drawing.Point(9, 131);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(458, 134);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Медицинский состав";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dataGridViewPoliclinicData);
+            this.groupBox2.Location = new System.Drawing.Point(473, 8);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(206, 257);
+            this.groupBox2.TabIndex = 12;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Пациенты";
+            // 
+            // dataGridViewTreatmens
+            // 
+            this.dataGridViewTreatmens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTreatmens.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnDateOfTreatment,
+            this.ColumnFIOPatient,
+            this.ColumnfioMedic,
+            this.ColumnTestResult,
+            this.ColumnDiagnostic});
+            this.dataGridViewTreatmens.Location = new System.Drawing.Point(0, 16);
+            this.dataGridViewTreatmens.Name = "dataGridViewTreatmens";
+            this.dataGridViewTreatmens.ReadOnly = true;
+            this.dataGridViewTreatmens.RowHeadersVisible = false;
+            this.dataGridViewTreatmens.Size = new System.Drawing.Size(312, 241);
+            this.dataGridViewTreatmens.TabIndex = 9;
+            this.dataGridViewTreatmens.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dataGridViewTreatmens_MouseUp);
+            // 
+            // ColumnDateOfTreatment
+            // 
+            this.ColumnDateOfTreatment.HeaderText = "Дата обращения";
+            this.ColumnDateOfTreatment.Name = "ColumnDateOfTreatment";
+            this.ColumnDateOfTreatment.ReadOnly = true;
+            // 
+            // ColumnFIOPatient
+            // 
+            this.ColumnFIOPatient.HeaderText = "ФИО пациента";
+            this.ColumnFIOPatient.Name = "ColumnFIOPatient";
+            this.ColumnFIOPatient.ReadOnly = true;
+            // 
+            // ColumnfioMedic
+            // 
+            this.ColumnfioMedic.HeaderText = "ФИО врача";
+            this.ColumnfioMedic.Name = "ColumnfioMedic";
+            this.ColumnfioMedic.ReadOnly = true;
+            // 
+            // ColumnTestResult
+            // 
+            this.ColumnTestResult.HeaderText = "Результаты анализа";
+            this.ColumnTestResult.Name = "ColumnTestResult";
+            this.ColumnTestResult.ReadOnly = true;
+            // 
+            // ColumnDiagnostic
+            // 
+            this.ColumnDiagnostic.HeaderText = "Диагноз";
+            this.ColumnDiagnostic.Name = "ColumnDiagnostic";
+            this.ColumnDiagnostic.ReadOnly = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.dataGridViewTreatmens);
+            this.groupBox3.Location = new System.Drawing.Point(692, 8);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(312, 257);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Обращения";
+            // 
+            // buttonViewAllTreatments
+            // 
+            this.buttonViewAllTreatments.Location = new System.Drawing.Point(181, 271);
+            this.buttonViewAllTreatments.Name = "buttonViewAllTreatments";
+            this.buttonViewAllTreatments.Size = new System.Drawing.Size(114, 50);
+            this.buttonViewAllTreatments.TabIndex = 14;
+            this.buttonViewAllTreatments.Text = "Показать все обращения";
+            this.buttonViewAllTreatments.UseVisualStyleBackColor = true;
+            this.buttonViewAllTreatments.Click += new System.EventHandler(this.buttonViewAllTreatments_Click);
             // 
             // Column1
             // 
@@ -429,71 +557,39 @@
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
-            // Column4
+            // Columnbirthdate
             // 
-            this.Column4.HeaderText = "Результаты анализов";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
+            this.Columnbirthdate.HeaderText = "Дата Рождения";
+            this.Columnbirthdate.Name = "Columnbirthdate";
+            this.Columnbirthdate.ReadOnly = true;
             // 
-            // Column3
+            // ColumnGen
             // 
-            this.Column3.HeaderText = "Диагноз";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
+            this.ColumnGen.HeaderText = "Пол";
+            this.ColumnGen.Name = "ColumnGen";
+            this.ColumnGen.ReadOnly = true;
             // 
-            // groupBoxDopInfo
+            // ColumnBloodt
             // 
-            this.groupBoxDopInfo.Controls.Add(this.labelInformationPatient);
-            this.groupBoxDopInfo.Controls.Add(this.labelInformationTreatment);
-            this.groupBoxDopInfo.Controls.Add(this.labelInformationMedic);
-            this.groupBoxDopInfo.Location = new System.Drawing.Point(473, 415);
-            this.groupBoxDopInfo.Name = "groupBoxDopInfo";
-            this.groupBoxDopInfo.Size = new System.Drawing.Size(531, 199);
-            this.groupBoxDopInfo.TabIndex = 10;
-            this.groupBoxDopInfo.TabStop = false;
-            this.groupBoxDopInfo.Text = "Дополнительная информация";
-            // 
-            // labelInformationPatient
-            // 
-            this.labelInformationPatient.AutoSize = true;
-            this.labelInformationPatient.Location = new System.Drawing.Point(433, 25);
-            this.labelInformationPatient.Name = "labelInformationPatient";
-            this.labelInformationPatient.Size = new System.Drawing.Size(92, 13);
-            this.labelInformationPatient.TabIndex = 2;
-            this.labelInformationPatient.Text = "InformationPatient";
-            // 
-            // labelInformationTreatment
-            // 
-            this.labelInformationTreatment.AutoSize = true;
-            this.labelInformationTreatment.Location = new System.Drawing.Point(216, 25);
-            this.labelInformationTreatment.Name = "labelInformationTreatment";
-            this.labelInformationTreatment.Size = new System.Drawing.Size(107, 13);
-            this.labelInformationTreatment.TabIndex = 1;
-            this.labelInformationTreatment.Text = "InformationTreatment";
-            // 
-            // labelInformationMedic
-            // 
-            this.labelInformationMedic.AutoSize = true;
-            this.labelInformationMedic.Location = new System.Drawing.Point(6, 25);
-            this.labelInformationMedic.Name = "labelInformationMedic";
-            this.labelInformationMedic.Size = new System.Drawing.Size(88, 13);
-            this.labelInformationMedic.TabIndex = 0;
-            this.labelInformationMedic.Text = "InformationMedic";
+            this.ColumnBloodt.HeaderText = "Группа крови";
+            this.ColumnBloodt.Name = "ColumnBloodt";
+            this.ColumnBloodt.ReadOnly = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1012, 916);
-            this.Controls.Add(this.groupBoxDopInfo);
-            this.Controls.Add(this.dataGridViewPoliclinicData);
+            this.ClientSize = new System.Drawing.Size(1012, 870);
+            this.Controls.Add(this.buttonViewAllTreatments);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxTreatment);
             this.Controls.Add(this.groupBoxPatient);
             this.Controls.Add(this.buttonRemovePatient);
             this.Controls.Add(this.buttonAddPatirent);
             this.Controls.Add(this.buttonRemoveTreatment);
             this.Controls.Add(this.buttonAddTreatment);
-            this.Controls.Add(this.listBoxMedic);
             this.Controls.Add(this.groupBoxPoliclinicInformation);
             this.Name = "Form1";
             this.Text = "Реестр поликлиники";
@@ -509,8 +605,11 @@
             this.groupBoxTreatment.ResumeLayout(false);
             this.groupBoxTreatment.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPoliclinicData)).EndInit();
-            this.groupBoxDopInfo.ResumeLayout(false);
-            this.groupBoxDopInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMedics)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTreatmens)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -519,7 +618,6 @@
 
         private System.Windows.Forms.GroupBox groupBoxPoliclinicInformation;
         private System.Windows.Forms.Label labelPoliclinicInformation;
-        private System.Windows.Forms.ListBox listBoxMedic;
         private System.Windows.Forms.Button buttonAddTreatment;
         private System.Windows.Forms.Button buttonRemoveTreatment;
         private System.Windows.Forms.Button buttonAddPatirent;
@@ -546,19 +644,30 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxResTests;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxChekPolis;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dateTimePickerTreatment;
+        private System.Windows.Forms.Button buttonComoliteTreatment;
+        private System.Windows.Forms.DataGridView dataGridViewMedics;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSpecialty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFIO;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPosition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDateOfCommencement;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCountTreatments;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridView dataGridViewTreatmens;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDateOfTreatment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFIOPatient;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnfioMedic;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTestResult;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDiagnostic;
+        private System.Windows.Forms.Button buttonViewAllTreatments;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.Button buttonComoliteTreatment;
-        private System.Windows.Forms.GroupBox groupBoxDopInfo;
-        private System.Windows.Forms.Label labelInformationMedic;
-        private System.Windows.Forms.Label labelInformationPatient;
-        private System.Windows.Forms.Label labelInformationTreatment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columnbirthdate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnGen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnBloodt;
     }
 }
 

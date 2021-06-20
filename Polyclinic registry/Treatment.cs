@@ -13,16 +13,17 @@ namespace Polyclinic_registry
         static int count;
         public DateTime dateOfTreatment { get; set; }
         public string fioPatient { get; set; }//как тебя получит падла?
-
+        public string fioMedic { get; set; }
         public string testResults { get; set; }
         public string diagnostic { get; set; }
         //string fiop;
         
-        public Treatment(DateTime dt, string fp, string tr, string diag)
+        public Treatment(DateTime dt, string fp, string fm, string tr, string diag)
         {
             count++;
             dateOfTreatment = dt;
             fioPatient = fp;
+            fioMedic = fm;
             testResults = tr;
             diagnostic = diag;
         }

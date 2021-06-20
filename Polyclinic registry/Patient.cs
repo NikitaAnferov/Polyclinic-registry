@@ -10,7 +10,7 @@ namespace Polyclinic_registry
     public class Patient : Human
     {
         public string policyNumber { get; set; }
-        BloodType bloodt;
+        public BloodType bloodt { get; set; }
         public enum BloodType { I, II, III, IV};
 
         public Patient() : base()

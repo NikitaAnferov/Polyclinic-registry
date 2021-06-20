@@ -12,6 +12,7 @@ namespace Polyclinic_registry
         public string adressPolyclinic { get; set; }
         public string telephoneNumberPolyclinic { get; set; }
         public List<Patient> patients { get; set; }
+        public List<Medic> medics { get; set; }
 
         public Polyclinic()
         {
@@ -19,13 +20,15 @@ namespace Polyclinic_registry
             adressPolyclinic = "Uncnown";
             telephoneNumberPolyclinic = "Uncnown";
             patients = new List<Patient>();
+            medics = new List<Medic>();
         }
-        public Polyclinic(int num, string ap, string tel, List<Patient> patients)
+        public Polyclinic(int num, string ap, string tel, List<Patient> patients, List<Medic> medics)
         {
             numberPolyclinic = num;
             adressPolyclinic = ap;
             telephoneNumberPolyclinic = tel;
             this.patients = patients;
+            this.medics = medics;
 
         }
 
@@ -41,6 +44,11 @@ namespace Polyclinic_registry
         {
             patients.Add(pa);
         }
+        public void AddMedic(Medic me)
+        {
+            medics.Add(me);
+        }
+
         public void RemovePatient(int ind)
         {
             patients.RemoveAt(ind);
