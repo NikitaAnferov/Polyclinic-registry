@@ -80,6 +80,7 @@
             this.Columnbirthdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnGen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnBloodt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCountTreatmentsP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxPoliclinicInformation.SuspendLayout();
             this.groupBoxPatient.SuspendLayout();
             this.groupBoxGender.SuspendLayout();
@@ -402,7 +403,8 @@
             this.Column2,
             this.Columnbirthdate,
             this.ColumnGen,
-            this.ColumnBloodt});
+            this.ColumnBloodt,
+            this.ColumnCountTreatmentsP});
             this.dataGridViewPoliclinicData.Location = new System.Drawing.Point(0, 16);
             this.dataGridViewPoliclinicData.Name = "dataGridViewPoliclinicData";
             this.dataGridViewPoliclinicData.ReadOnly = true;
@@ -575,6 +577,12 @@
             this.ColumnBloodt.Name = "ColumnBloodt";
             this.ColumnBloodt.ReadOnly = true;
             // 
+            // ColumnCountTreatmentsP
+            // 
+            this.ColumnCountTreatmentsP.HeaderText = "Количество обращений";
+            this.ColumnCountTreatmentsP.Name = "ColumnCountTreatmentsP";
+            this.ColumnCountTreatmentsP.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -668,6 +676,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Columnbirthdate;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnGen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnBloodt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCountTreatmentsP;
     }
 }
 

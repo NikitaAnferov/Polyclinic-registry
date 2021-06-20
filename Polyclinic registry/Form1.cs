@@ -37,7 +37,6 @@ namespace Polyclinic_registry
             AddNew_Treatment(new DateTime(2021, 05, 04), polyclinic.patients.Last().fio, polyclinic.medics[2].fio, "положительные", "гастрит");
         }
 
-        //======================================
         public void RefreshPatients() //вот как эту херь правильно написать?!
 
         {
@@ -53,6 +52,7 @@ namespace Polyclinic_registry
                 dataGridViewPoliclinicData[2, i].Value = p.birthdate;
                 dataGridViewPoliclinicData[3, i].Value = p.gen;
                 dataGridViewPoliclinicData[4, i].Value = p.bloodt;
+                dataGridViewPoliclinicData[5, i].Value = CountTreatmentsPatient(p.fio);
                 i++;
             }
             
@@ -61,7 +61,6 @@ namespace Polyclinic_registry
         //=====================================
 
         public void RefreshMedics() 
-
         {
             dataGridViewMedics.Rows.Clear();
             if (polyclinic.medics.Count == 0)
@@ -75,15 +74,11 @@ namespace Polyclinic_registry
                 dataGridViewMedics[2, i].Value = m.position;
                 dataGridViewMedics[3, i].Value = m.dateOfCommencement;
                 dataGridViewMedics[4, i].Value = m.treatments.Count;
-
                 i++;
             }
-
-
         }
 
         public void RefreshTreatment()
-
         {
             dataGridViewTreatmens.Rows.Clear();
             if (Treatments.treatments.Count == 0)
@@ -99,6 +94,8 @@ namespace Polyclinic_registry
                 dataGridViewTreatmens[4, i].Value = t.diagnostic;
                 i++;
             }
+
+            groupBox3.Text = "Все обращения";
         }
 
         public void RefreshTreatmentM(string fioMedic)
@@ -128,6 +125,8 @@ namespace Polyclinic_registry
                 dataGridViewTreatmens[4, i].Value = t.diagnostic;
                 i++;
             }
+
+            groupBox3.Text = String.Format("Обращения к врачу {0}", medic.fio);
         }
 
         public void RefreshTreatmentP(string fioPatient)
@@ -144,15 +143,7 @@ namespace Polyclinic_registry
             }
 
             dataGridViewTreatmens.Rows.Clear();
-            int count = 0;
-            foreach (Medic m in polyclinic.medics)
-            {
-                foreach (Treatment t in m.treatments)
-                {
-                    if (t.fioPatient == fioPatient)
-                        count++;
-                }
-            }
+            int count = CountTreatmentsPatient(fioPatient);
             if (count == 0)
                 return;
             dataGridViewTreatmens.RowCount = count;
@@ -172,7 +163,8 @@ namespace Polyclinic_registry
                     }
                 }
             }
-                
+
+            groupBox3.Text = String.Format("Обращения пациента {0}", patient.fio);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -240,13 +232,17 @@ namespace Polyclinic_registry
 
         private void buttonComoliteTreatment_Click(object sender, EventArgs e)
         {
-            string fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
-            string fioMedic = dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value.ToString();
-            AddNew_Treatment(dateTimePickerTreatment.Value, fioPatient, fioMedic, textBoxResTests.Text, textBoxdiagnostic.Text);
+            if (dataGridViewPoliclinicData.CurrentCell != null
+                && dataGridViewMedics.CurrentCell != null
+                && polyclinic.patients.Count != 0)
+            {
+                string fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
+                string fioMedic = dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value.ToString();
+                AddNew_Treatment(dateTimePickerTreatment.Value, fioPatient, fioMedic, textBoxResTests.Text, textBoxdiagnostic.Text);
 
-
-            groupBoxTreatment.Visible = false;
-            RefreshAll();
+                groupBoxTreatment.Visible = false;
+                RefreshAll();
+            }
         }
 
         private void buttonViewAllTreatments_Click(object sender, EventArgs e)
@@ -256,12 +252,14 @@ namespace Polyclinic_registry
 
         private void dataGridViewMedics_MouseUp(object sender, MouseEventArgs e)
         {
-            SelectedRows(dataGridViewMedics);
+            if(SelectedRows(dataGridViewMedics) &&
+                dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value != null)
             RefreshTreatmentM(dataGridViewMedics.Rows[dataGridViewMedics.CurrentCell.RowIndex].Cells[1].Value.ToString());
         }
         private void dataGridViewPoliclinicData_MouseUp(object sender, MouseEventArgs e)
         {
-            SelectedRows(dataGridViewPoliclinicData);
+            if(SelectedRows(dataGridViewPoliclinicData) &&
+                dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value != null)
             RefreshTreatmentP(dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString());
         }
 
@@ -270,11 +268,17 @@ namespace Polyclinic_registry
             SelectedRows(dataGridViewTreatmens);
         }
 
-        private void SelectedRows(DataGridView dataGridView)
+        private bool SelectedRows(DataGridView dataGridView)
         {
-            int cellRow = dataGridView.CurrentCell.RowIndex;
-            dataGridView.Rows[cellRow].Selected = true;
+            if (dataGridView.CurrentCell != null)
+            {
+                int cellRow = dataGridView.CurrentCell.RowIndex;
+                dataGridView.Rows[cellRow].Selected = true;
+                return true;
+            }
+            return false;
         }
+
 
         private void RefreshAll()
         {
@@ -285,56 +289,82 @@ namespace Polyclinic_registry
 
         private void buttonRemovePatient_Click(object sender, EventArgs e)
         {
-            String fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
-
-            Patient patient = new Patient();
-
-            foreach (Patient p in polyclinic.patients)
+            if (dataGridViewPoliclinicData.CurrentCell != null &&
+                polyclinic.patients.Count != 0)
             {
-                if (p.fio == fioPatient)
+                String fioPatient = dataGridViewPoliclinicData.Rows[dataGridViewPoliclinicData.CurrentCell.RowIndex].Cells[0].Value.ToString();
+
+                Patient patient = new Patient();
+
+                foreach (Patient p in polyclinic.patients)
                 {
-                    patient = p;
-                    break;
+                    if (p.fio == fioPatient)
+                    {
+                        patient = p;
+                        break;
+                    }
                 }
+                polyclinic.patients.Remove(patient);
+                RefreshAll();
             }
-            polyclinic.patients.Remove(patient);
-            RefreshAll();
         }
 
         private void buttonRemoveTreatment_Click(object sender, EventArgs e)
         {
-            String dateOfTreatment =  dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[0].Value.ToString();
-            String fioPatient = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[1].Value.ToString();
-            String fioMedic = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[2].Value.ToString();
-
-            Treatment treatment = new Treatment();
-            Medic medic = new Medic();
-
-            foreach (Treatment t in Treatments.treatments)
+            if (dataGridViewTreatmens.CurrentCell != null &&
+                dataGridViewTreatmens.CurrentCell != null &&
+                dataGridViewTreatmens.CurrentCell != null &&
+                Treatments.treatments.Count != 0)
             {
-                if (t.dateOfTreatment.ToString() == dateOfTreatment
-                    && t.fioPatient == fioPatient
-                    && t.fioMedic == fioMedic)
-                {
-                    treatment = t;
-                    break;
-                }
-            }
-            Treatments.treatments.Remove(treatment);
+                String dateOfTreatment = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[0].Value.ToString();
+                String fioPatient = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[1].Value.ToString();
+                String fioMedic = dataGridViewTreatmens.Rows[dataGridViewTreatmens.CurrentCell.RowIndex].Cells[2].Value.ToString();
 
-            foreach (Medic m in polyclinic.medics)
-            {
-                if (m.fio == fioMedic)
-                {
-                    medic = m;
-                    break;
-                }
-            }
-            medic.treatments.Remove(treatment);
+                Treatment treatment = new Treatment();
+                Medic medic = new Medic();
 
-            RefreshAll();
+                foreach (Treatment t in Treatments.treatments)
+                {
+                    if (t.dateOfTreatment.ToString() == dateOfTreatment
+                        && t.fioPatient == fioPatient
+                        && t.fioMedic == fioMedic)
+                    {
+                        treatment = t;
+                        break;
+                    }
+                }
+                Treatments.treatments.Remove(treatment);
+
+                foreach (Medic m in polyclinic.medics)
+                {
+                    if (m.fio == fioMedic)
+                    {
+                        medic = m;
+                        break;
+                    }
+                }
+                medic.treatments.Remove(treatment);
+
+                RefreshAll();
+            }
 
         }
+
+        private int CountTreatmentsPatient(String fioPatient)
+        {
+            int count = 0;
+            foreach (Medic m in polyclinic.medics)
+            {
+                foreach (Treatment t in m.treatments)
+                {
+                    if (t.fioPatient == fioPatient)
+                        count++;
+                }
+            }
+
+            return count;
+        }
+
     }
 }
 
